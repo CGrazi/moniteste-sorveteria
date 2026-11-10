@@ -26,7 +26,7 @@ function Carrinho() {
     setEnviando(true);
     const { data, error } = await supabase.from("orders").insert({ items, total, customer_name: nome, address: endereco, phone: tel }).select("id").single();
     setEnviando(false);
-    if (error) return toast.error("Não foi possível enviar o pedido");
+    if (error) { toast.error("Não foi possível enviar o pedido"); return; }
     const linhas = items.map((i) => `• ${i.qtd}x ${i.nome} — ${brl(i.preco * i.qtd)}`).join("\n");
     const msg = `Novo pedido #${data.id.slice(0, 8)}\n${linhas}\nTotal: ${brl(total)}\n\nNome: ${nome}\nEndereço: ${endereco}\nTelefone: ${tel}`;
     setFeito(waLink(msg));

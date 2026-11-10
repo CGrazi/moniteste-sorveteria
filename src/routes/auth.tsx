@@ -22,19 +22,19 @@ function AuthPage() {
     if (mode === "in") {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       setLoading(false);
-      if (error) return toast.error("E-mail ou senha incorretos");
+      if (error) { toast.error("E-mail ou senha incorretos"); return; }
       nav({ to: "/carrinho" });
     } else {
       const { error } = await supabase.auth.signUp({ email, password, options: { emailRedirectTo: window.location.origin + "/carrinho" } });
       setLoading(false);
-      if (error) return toast.error(error.message);
+      if (error) { toast.error(error.message); return; }
       toast.success("Conta criada! Confirme pelo link enviado ao seu e-mail.");
     }
   }
 
   async function google() {
     const r = await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin });
-    if (r.error) return toast.error("Não foi possível entrar com Google");
+    if (r.error) { toast.error("Não foi possível entrar com Google");
     if (!r.redirected) nav({ to: "/carrinho" });
   }
 
